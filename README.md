@@ -117,13 +117,19 @@ Or else opening a txt file(open("fileName.txt", "a") a: Opens a file for appendi
     else:
         resultat=open("domain.txt", "a")
  ```
- Until reaching the end of the lenght of the file(while), concatening a sub_domain with the input domain in a variable and  
+ Until reaching the end of the lenght of the file(while), concatening a sub_domain with the input domain in a variable 
  ```bash
         i=0
         while i < length_hint(tab):
             trial= str(tab[i]) + "." + domain
+ ```
+ Ping it
+ ```bash
             var="ping -c 3 " + trial
             cmd= subprocess.run(var, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+ ```
+ Depending on the result (0 means the cmd worked otherwise there's an error) ether save the ones that worked in the file(fileName.write()) or print that the domain doesn't work
+ ```bash
             if cmd.returncode==0:
                 resultat.write(trial)
                 resultat.write('\n')
