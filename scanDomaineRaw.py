@@ -1,14 +1,8 @@
-from distutils.log import error
-from itertools import count
-from multiprocessing.connection import wait
 from operator import length_hint
-from sys import stdout
-from tracemalloc import DomainFilter
-from wsgiref import validate
 import requests
 import subprocess
 
-def get_domaine(tab):
+def get_sub_domain(tab):
     try:
         url='https://raw.githubusercontent.com/rbsec/dnscan/master/subdomains-10000.txt'    
         req=requests.get(url, allow_redirects=True)
@@ -51,16 +45,16 @@ def get_tld(tab):
     return(tab)
 
 
-def verification_domaine(domaine):
+def domain_verification(domain):
     tdl=""
-    indice=0
+    index=0
     tab=[]
     get_tld(tab)
-    while domaine[indice]!=".":
-            indice+=1
-    while indice < length_hint(domaine):
-        tdl+=domaine[indice]
-        indice+=1
+    while domain[index]!=".":
+            index+=1
+    while index < length_hint(domain):
+        tdl+=domain[index]
+        index+=1
 
     if tdl in tab:
         return True
@@ -69,15 +63,15 @@ def verification_domaine(domaine):
 
 def main():
     tab=[]
-    get_domaine(tab)
-    domaine=input("Entrez un nom de domaine: ")
-    if verification_domaine(domaine)==False:
-        print("format de domaine non valable ex: exemple.fr")
+    get_sub_domain(tab)
+    domain=input("Enter a domain name(ex: exemple.ex): ")
+    if domain_verification(domain)==False:
+        print("domain format invalid ex: exemple.com")
     else:
-        resultat=open("domaine.txt", "a")
+        resultat=open("domain.txt", "a")
         i=0
         while i < length_hint(tab):
-            trial= str(tab[i]) + "." + domaine
+            trial= str(tab[i]) + "." + domain
             var="ping -c 3 " + trial
             cmd= subprocess.run(var, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             if cmd.returncode==0:
@@ -85,10 +79,8 @@ def main():
                 resultat.write('\n')
                 print(var)
             else:
-                print("domaine non existant")
+                print("non existant domain")
             i+=1
         resultat.close()
     
-main()
-
- 
+main
