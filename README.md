@@ -26,10 +26,10 @@ def get_sub_domain(tab):
         req=requests.get(url, allow_redirects=True)
     except:
         print("error")
-    i=0
 ```
 then save every single sub_domain line by line(req.text.splitLines) in a list(listName.append)
 ```bash
+    i=0
     while i < 9985:
         tab.append(req.text.splitlines()[i])
         i+=1
